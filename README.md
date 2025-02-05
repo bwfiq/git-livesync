@@ -13,6 +13,7 @@ A VS Code extension to watch for file changes and automatically sync them to the
 - Add auto pulling irrespective of file changes
 - Add settings that require it to be enabled for every specific workplace through settings.json
 - Add error handling for if workspace doesn't have `.git/` or `.gitignore`
+- Either close the terminals after exec or just use exec
 
 ## Requirements
 
@@ -41,6 +42,7 @@ This extension contributes the following settings:
 - There is no error checking for if the workspace is a git repository or not.
 - There is no error checking for if a .gitignore exists. 
 - It is not packaged as a .vsix file yet.
+- The terminals created are spammed like crazy.
 
 ## Release Notes
 
