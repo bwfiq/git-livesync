@@ -7,6 +7,11 @@ A VS Code extension to watch for file changes and automatically sync them to the
 - Hooks into VS Code's API to watch for file changes
 - If the file is not in the `.gitignore` or under `.git/`, it initiates a commit-and-sync with the timestamp and date.
 
+### TODO
+- Add some kind of sleep or cooldown
+- Add settings that require it to be enabled for every specific workplace through settings.json
+- Add error handling for if workspace doesn't have `.git/` or `.gitignore`
+
 ## Requirements
 
 - Node.js version 12.x or above is required.
