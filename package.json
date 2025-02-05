@@ -17,6 +17,12 @@
         "command": "git-livesync.helloWorld",
         "title": "Hello World"
       }
+    ],
+    "configuration": [
+        {
+            "title": "",
+            "properties": {}
+        }
     ]
   },
   "scripts": {

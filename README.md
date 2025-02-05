@@ -32,7 +32,8 @@ Take note that the extension works only with remote repositories (for now).
 
 This extension contributes the following settings:
 
-* not yet!
+* `git-livesync.enable`: Enable/disable this extension.
+* `git-livesync.commitDelay`: Only commit if this amount of time in milliseconds has passed since the last commit.
 
 ## Known Issues
 
