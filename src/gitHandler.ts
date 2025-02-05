@@ -51,6 +51,7 @@ export class GitHandler {
           commitMessage +
           '" && git push'
       );
+      terminal.sendText(`exit`);
       vscode.window.showInformationMessage(
         `Made commit with name ${commitMessage}.`
       );
