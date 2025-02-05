@@ -3,7 +3,7 @@
  */
 
 import * as vscode from "vscode";
-import { getWorkspacePath } from "./utils";
+import { getCommitDelay, getWorkspacePath } from "./utils";
 
 /**
  * Class to handle Git operations.
@@ -17,14 +17,6 @@ export class GitHandler {
    */
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
-
-    const disposable = vscode.commands.registerCommand(
-      "git-livesync.helloWorld",
-      () => {
-        vscode.window.showInformationMessage("Hello World from git-livesync!");
-      }
-    );
-    context.subscriptions.push(disposable);
   }
 
   /**
@@ -42,12 +34,11 @@ export class GitHandler {
     const lastCommitTimestamp = await this.getLastCommitTimestamp(
       workspacePath
     );
-    const now = Math.floor(Date.now() / 1000); // Unix timestamp in s
+    const now = Math.floor(Date.now() / 1000); // Unix timestamp in seconds
 
-    // TODO: change the 5 second hardcoded value to a setting
-    if (lastCommitTimestamp && now - lastCommitTimestamp < 5) {
-      //vscode.window.showInformationMessage("Skipping commit.");
-    } else {
+    if (
+      !(lastCommitTimestamp && now - lastCommitTimestamp < getCommitDelay())
+    ) {
       const date = new Date();
       const commitMessage = `${date.toLocaleString()}: ${action} ${filePathRelative}`;
       const terminal = vscode.window.createTerminal("git-livesync");

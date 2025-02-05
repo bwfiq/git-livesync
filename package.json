@@ -20,8 +20,21 @@
     ],
     "configuration": [
         {
-            "title": "",
-            "properties": {}
+            "title": "git-livesync",
+            "properties": {
+                "git-livesync.enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "scope": "resource",
+                    "description": "CAUTION: DO NOT ENABLE THIS FOR THE USER! Specifies whether to enable this extension in this workspace."
+                },
+                "git-livesync.commitDelay": {
+                    "type": "integer",
+                    "default": 30,
+                    "scope": "resource",
+                    "description": "Set the time in seconds since the last commit before the extension will auto commit your changes."
+                }
+            }
         }
     ]
   },
