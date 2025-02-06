@@ -52,7 +52,7 @@ vsce package
 | Key                        | Type    | Description                                                        |
 | -------------------------- | ------- | ------------------------------------------------------------------ |
 | `git-livesync.commitDelay` | Number  | Time in seconds to wait before committing. Default is 30 seconds.  |
-| `git-livesync.enabled`     | Boolean | Enables or disables the extension's operations. Default is `true`. |
+| `git-livesync.enabled`     | Boolean | Enables or disables the extension's operations. Default is `false`. Take care not to enable this except in specific workspaces. |
 
 ## Development
 
