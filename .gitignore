@@ -156,3 +156,6 @@ output*.*
 # Mocha test files
 core
 not
+
+# Built extension
+*.vsix

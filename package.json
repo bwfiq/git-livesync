@@ -9,6 +9,16 @@
   "categories": [
     "Other"
   ],
+  "license": "SEE LICENSE IN LICENSE",
+  "homepage": "https://github.com/bwfiq/git-livesync",
+  "bugs": {
+    "url": "https://github.com/bwfiq/git-livesync/issues",
+    "email": "mohammadrafiq567@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bwfiq/git-livesync.git"
+  },
   "activationEvents": [
     "workspaceContains:**/.git",
     "onStartupFinished"
