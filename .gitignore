@@ -152,3 +152,7 @@ dist
 
 # Output files from consolidate
 output*.*
+
+# Mocha test files
+core
+not
