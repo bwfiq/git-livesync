@@ -72,7 +72,6 @@ function initialiseEnabled() {
 
   if (typeof configuredEnabled === "boolean") {
     enabled = configuredEnabled;
-    console.log(`Enabled: ${enabled}`);
   } else {
     console.error("Couldn't get enabled status");
   }
@@ -95,13 +94,20 @@ function initialiseEnabled() {
 }
 
 /**
- * Gets the workspace path.
+ * Gets the workspace path and keeps it updated.
  * @returns {string} - The workspace path or empty if no workspace folder exists.
  */
 function initialiseWorkspacePath() {
   if (vscode.workspace.workspaceFolders) {
     workspacePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
   }
+
+  // Listen for configuration changes
+  vscode.workspace.onDidChangeWorkspaceFolders((event) => {
+    if (vscode.workspace.workspaceFolders) {
+      workspacePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    }
+  });
 }
 
 /**
