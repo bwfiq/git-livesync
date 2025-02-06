@@ -3,13 +3,16 @@
  */
 
 import * as vscode from "vscode";
-import { getCommitDelay, getWorkspacePath } from "./utils";
+import { simpleGit, SimpleGit, SimpleGitOptions } from "simple-git";
+import { getCommitDelay, getWorkspacePath, sleep } from "./utils";
 
 /**
  * Class to handle Git operations.
  */
 export class GitHandler {
   private context: vscode.ExtensionContext;
+  private git: SimpleGit;
+  private inProgress: boolean;
 
   /**
    * Constructs a GitHandler instance.
@@ -17,56 +20,62 @@ export class GitHandler {
    */
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
+    this.inProgress = false;
+    const options: Partial<SimpleGitOptions> = {
+      baseDir: getWorkspacePath(),
+      binary: "git",
+      maxConcurrentProcesses: 6,
+      trimmed: false,
+    };
+    this.git = simpleGit(options);
   }
 
   /**
    * Commits changes to the configured remote.
    */
   public async commit() {
-    // Get the last commit time and don't commit if it's too soon
+    if (this.inProgress) {
+      vscode.window.showWarningMessage("Commit in progress.");
+      return;
+    }
+
+    vscode.window.showInformationMessage("Starting commit...");
+    this.inProgress = true;
     const lastCommitTimestamp = await this.getLastCommitTimestamp();
     const now = Math.floor(Date.now() / 1000); // Unix timestamp in seconds
+    const timeSinceLastCommit = now - lastCommitTimestamp; // in seconds
+    const timeDelta = getCommitDelay() - timeSinceLastCommit;
+    const commitMessage = new Date().toLocaleString();
+    vscode.window.showInformationMessage(
+      "Last commit was at " +
+        lastCommitTimestamp +
+        ". It's been " +
+        timeSinceLastCommit +
+        "ms since then."
+    );
 
-    if (
-      !(lastCommitTimestamp && now - lastCommitTimestamp < getCommitDelay())
-    ) {
-      const date = new Date();
-      const commitMessage = `${date.toLocaleString()}`;
-      const terminal = vscode.window.createTerminal("git-livesync");
-
-      terminal.sendText(`cd ${getWorkspacePath()}`);
-      terminal.sendText(
-        'git pull \
-            && git add . \
-            && git commit -am "' +
-          commitMessage +
-          '" && git push'
-      );
-      terminal.sendText(`exit`);
-      vscode.window.showInformationMessage(
-        `Made commit with name ${commitMessage}.`
-      );
-    }
+    const sleepDuration = Math.max(0, timeDelta); // sleep should handle negative numbers but we are evil
+    vscode.window.showInformationMessage(
+      "Sleeping for " + sleepDuration + "seconds."
+    );
+    await sleep(1000 * sleepDuration);
+    await this.git.pull().add(".").commit(commitMessage).push();
+    vscode.window.showInformationMessage("Committed to remote.");
+    this.inProgress = false;
   }
 
   /**
    * Retrieves the timestamp of the last commit in UNIX format.
-   * @returns {Promise<number | null>} - The last commit timestamp or null if no commits exist.
+   * @returns {Promise<number>} - The last commit timestamp.
    */
-  private async getLastCommitTimestamp(): Promise<number | null> {
-    return new Promise((resolve) => {
-      const { exec } = require("child_process");
-      exec(
-        "git -C " + getWorkspacePath() + " log -1 --format=%ct",
-        (error: any, stdout: string, stderr: string) => {
-          if (error) {
-            console.error(`Error getting last commit time: ${stderr}`);
-            resolve(null);
-            return;
-          }
-          resolve(parseInt(stdout.trim(), 10)); // Return as a number
-        }
-      );
-    });
+  private async getLastCommitTimestamp(): Promise<number> {
+    vscode.window.showInformationMessage(
+      "Getting the timestamp of the latest commit."
+    );
+    const log = await this.git.log(["-1", "--format=%ct"]);
+    console.log("log", log);
+    return log.latest
+      ? parseInt(log.latest.hash, 10)
+      : Math.floor(Date.now() / 1000); // Date.now() as default
   }
 }
