@@ -19,23 +19,23 @@
       }
     ],
     "configuration": [
-        {
-            "title": "git-livesync",
-            "properties": {
-                "git-livesync.enabled": {
-                    "type": "boolean",
-                    "default": false,
-                    "scope": "resource",
-                    "description": "CAUTION: DO NOT ENABLE THIS FOR THE USER! Specifies whether to enable this extension in this workspace."
-                },
-                "git-livesync.commitDelay": {
-                    "type": "integer",
-                    "default": 30,
-                    "scope": "resource",
-                    "description": "Set the time in seconds since the last commit before the extension will auto commit your changes."
-                }
-            }
+      {
+        "title": "git-livesync",
+        "properties": {
+          "git-livesync.enabled": {
+            "type": "boolean",
+            "default": false,
+            "scope": "resource",
+            "description": "CAUTION: DO NOT ENABLE THIS FOR THE USER! Specifies whether to enable this extension in this workspace."
+          },
+          "git-livesync.commitDelay": {
+            "type": "integer",
+            "default": 30,
+            "scope": "resource",
+            "description": "Set the time in seconds since the last commit before the extension will auto commit your changes."
+          }
         }
+      }
     ]
   },
   "scripts": {
@@ -58,6 +58,7 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "ignore": "^7.0.3"
+    "ignore": "^7.0.3",
+    "simple-git": "^3.27.0"
   }
 }
