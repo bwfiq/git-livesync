@@ -10,7 +10,6 @@ A VS Code extension to watch for file changes and automatically sync them to the
 ### TODO
 
 *Planned Features for v0.0.1:*
-- Make the extension activate immediately instead of on running a command
 - Benchmark and remove any slowdowns
 
 *At some point:*
@@ -45,10 +44,10 @@ This extension contributes the following settings:
 - [x] The cooldown is hardcoded to 5 seconds. There is no setting for it.
 - [x] There are no workspace-specific settings. It will watch every single opened folder.
 - [x] The terminals created are spammed like crazy.
+- [x] You need to run a command from the palette to activate the extension.
 - [ ] There is no error checking for if the workspace is a git repository or not.
 - [ ] There is no error checking for if a .gitignore exists. 
 - [ ] It is not packaged as a .vsix file yet.
-- [ ] You need to run a command from the palette to activate the extension.
 
 ## Release Notes
 
