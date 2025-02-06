@@ -6,16 +6,15 @@ import * as vscode from "vscode";
 import { GitHandler } from "./gitHandler";
 import { IgnoreHandler } from "./ignoreHandler";
 import { Watcher } from "./watcher";
-import { getCommitDelay, getEnabled, initialise } from "./utils";
+import { initialiseGlobals } from "./utils";
 
 /**
  * Activates the extension.
  * @param {vscode.ExtensionContext} context - The extension context.
  */
 export function activate(context: vscode.ExtensionContext) {
-  vscode.window.showInformationMessage(`Hi.`);
   // Initialise global variables
-  initialise();
+  initialiseGlobals();
 
   // Initialise the handlers
   const gitHandler = new GitHandler(context);

@@ -31,7 +31,7 @@ export class Watcher implements vscode.Disposable {
   }
 
   /**
-   * Handles a file change event.
+   * Commits to remote upon a file change.
    * @param {uri} The location of the changed file.
    */
   private onChange(uri: vscode.Uri) {

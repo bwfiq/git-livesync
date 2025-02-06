@@ -4,6 +4,7 @@ import * as vscode from "vscode";
  * @fileoverview Utility functions for workspace operations.
  */
 
+// Global Variables
 let commitDelay: number = 30;
 let enabled: boolean = false;
 let workspacePath: string = "";
@@ -42,9 +43,6 @@ function initializeCommitDelay() {
 
   if (typeof configuredCommitDelay === "number") {
     commitDelay = configuredCommitDelay;
-    console.log(`Initial Commit Delay: ${commitDelay} seconds`);
-  } else {
-    console.error("Couldn't get commit delay");
   }
 
   // Listen for configuration changes
@@ -56,7 +54,6 @@ function initializeCommitDelay() {
 
       if (typeof newDelay === "number") {
         commitDelay = newDelay;
-        console.log(`Updated Commit Delay: ${commitDelay} seconds`);
       }
     }
   });
@@ -72,8 +69,6 @@ function initialiseEnabled() {
 
   if (typeof configuredEnabled === "boolean") {
     enabled = configuredEnabled;
-  } else {
-    console.error("Couldn't get enabled status");
   }
 
   // Listen for configuration changes
@@ -85,9 +80,6 @@ function initialiseEnabled() {
 
       if (typeof configuredEnabled === "boolean") {
         enabled = configuredEnabled;
-        console.log(`Enabled: ${enabled}`);
-      } else {
-        console.error("Couldn't get enabled status");
       }
     }
   });
@@ -102,7 +94,7 @@ function initialiseWorkspacePath() {
     workspacePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
   }
 
-  // Listen for configuration changes
+  // Listen for workspace changes
   vscode.workspace.onDidChangeWorkspaceFolders((event) => {
     if (vscode.workspace.workspaceFolders) {
       workspacePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
@@ -113,7 +105,7 @@ function initialiseWorkspacePath() {
 /**
  * Initialises all the necessary global variables.
  */
-export function initialise(): void {
+export function initialiseGlobals(): void {
   initializeCommitDelay();
   initialiseEnabled();
   initialiseWorkspacePath();

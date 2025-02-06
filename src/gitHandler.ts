@@ -34,33 +34,21 @@ export class GitHandler {
    * Commits changes to the configured remote.
    */
   public async commit() {
+    // Debouncing to ensure two commit processes don't start
     if (this.inProgress) {
-      vscode.window.showWarningMessage("Commit in progress.");
       return;
     }
 
-    vscode.window.showInformationMessage("Starting commit...");
     this.inProgress = true;
     const lastCommitTimestamp = await this.getLastCommitTimestamp();
     const now = Math.floor(Date.now() / 1000); // Unix timestamp in seconds
     const timeSinceLastCommit = now - lastCommitTimestamp; // in seconds
     const timeDelta = getCommitDelay() - timeSinceLastCommit;
     const commitMessage = new Date().toLocaleString();
-    vscode.window.showInformationMessage(
-      "Last commit was at " +
-        lastCommitTimestamp +
-        ". It's been " +
-        timeSinceLastCommit +
-        "ms since then."
-    );
-
     const sleepDuration = Math.max(0, timeDelta); // sleep should handle negative numbers but we are evil
-    vscode.window.showInformationMessage(
-      "Sleeping for " + sleepDuration + "seconds."
-    );
+    
     await sleep(1000 * sleepDuration);
     await this.git.pull().add(".").commit(commitMessage).push();
-    vscode.window.showInformationMessage("Committed to remote.");
     this.inProgress = false;
   }
 
@@ -69,13 +57,9 @@ export class GitHandler {
    * @returns {Promise<number>} - The last commit timestamp.
    */
   private async getLastCommitTimestamp(): Promise<number> {
-    vscode.window.showInformationMessage(
-      "Getting the timestamp of the latest commit."
-    );
-    const log = await this.git.log(["-1", "--format=%ct"]);
-    console.log("log", log);
+    const log = await this.git.log(["-1", "--format=%ct"]); // gets the UNIX time in ms of the latest commit
     return log.latest
       ? parseInt(log.latest.hash, 10)
-      : Math.floor(Date.now() / 1000); // Date.now() as default
+      : Math.floor(Date.now() / 1000); // Date.now() as default if we don't find any commits
   }
 }
