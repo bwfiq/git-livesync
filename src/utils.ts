@@ -118,3 +118,18 @@ export function initialise(): void {
   initialiseEnabled();
   initialiseWorkspacePath();
 }
+
+/**
+ * Returns a promise that resolves after a specified time in milliseconds.
+ * @param milliseconds - The time to sleep in milliseconds.
+ * @returns A promise that resolves after the specified time.
+ */
+export function sleep(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => {
+    if (milliseconds <= 0) {
+      resolve();
+    } else {
+      setTimeout(resolve, milliseconds);
+    }
+  });
+}
