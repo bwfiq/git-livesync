@@ -11,8 +11,6 @@ A VS Code extension to watch for file changes and automatically sync them to the
 
 *Planned Features for v0.0.1:*
 - Benchmark and remove any slowdowns
-
-*At some point:*
 - Add a setting to adjust pull and push behaviour instead of always syncing on commit
 - Add auto pulling irrespective of file changes
 - Add error handling for if workspace doesn't have `.git/` or `.gitignore`
