@@ -6,12 +6,7 @@ import * as vscode from "vscode";
 import { GitHandler } from "./gitHandler";
 import { IgnoreHandler } from "./ignoreHandler";
 import { Watcher } from "./watcher";
-import {
-  getCommitDelay,
-  getEnabled,
-  initialiseEnabled,
-  initializeCommitDelay,
-} from "./utils";
+import { getCommitDelay, getEnabled, initialise } from "./utils";
 
 /**
  * Activates the extension.
@@ -21,8 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
   console.log('Congratulations, your extension "git-livesync" is now active!');
 
   // Initialise global variables
-  initialiseEnabled();
-  initializeCommitDelay();
+  initialise();
 
   // Initialise the handlers
   const gitHandler = new GitHandler(context);
@@ -38,9 +32,9 @@ export function activate(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand(
     "git-livesync.helloWorld",
     () => {
-      vscode.window.showInformationMessage("Hello World from git-livesync!");
-      vscode.window.showInformationMessage(`Enabled: ${getEnabled()}`);
-      vscode.window.showInformationMessage(`Commit Delay: ${getCommitDelay()}`);
+      vscode.window.showInformationMessage(
+        `Hi.`
+      );
     }
   );
   context.subscriptions.push(disposable);

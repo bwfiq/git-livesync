@@ -25,29 +25,23 @@ export class Watcher implements vscode.Disposable {
     this.ignoreHandler = ignoreHandler;
 
     const fileWatcher = vscode.workspace.createFileSystemWatcher("**/*");
-    fileWatcher.onDidChange((uri) => this.onChange(uri, "changed"));
-    fileWatcher.onDidCreate((uri) => this.onChange(uri, "created"));
-    fileWatcher.onDidDelete((uri) => this.onChange(uri, "deleted"));
+    fileWatcher.onDidChange((uri) => this.onChange(uri));
+    fileWatcher.onDidCreate((uri) => this.onChange(uri));
+    fileWatcher.onDidDelete((uri) => this.onChange(uri));
   }
 
   /**
    * Handles a file change event.
-   * @param {vscode.Uri} uri - The file URI.
-   * @param {string} action - The action (changed, created, deleted) that occurred.
+   * @param {uri} The location of the changed file.
    */
-  private onChange(uri: vscode.Uri, action: string) {
-    const workspacePath = getWorkspacePath();
-    if (!workspacePath) {
-      return;
-    }
+  private onChange(uri: vscode.Uri) {
     const filePath = uri.fsPath;
-    const relativeFilePath = path.relative(workspacePath, filePath);
+    const relativeFilePath = path.relative(getWorkspacePath(), filePath);
 
     // TODO: Check all files, not just the changed one
     if (!this.ignoreHandler.ignores(relativeFilePath)) {
-      vscode.window.showInformationMessage(`${action} ${uri}`);
       if (getEnabled()) {
-        this.gitHandler.commit(relativeFilePath, action);
+        this.gitHandler.commit();
       }
     }
   }

@@ -4,8 +4,9 @@ import * as vscode from "vscode";
  * @fileoverview Utility functions for workspace operations.
  */
 
-let commitDelay: number;
-let enabled: boolean;
+let commitDelay: number = 30;
+let enabled: boolean = false;
+let workspacePath: string = "";
 
 /**
  * Gets the current commit delay.
@@ -24,9 +25,17 @@ export function getEnabled(): boolean {
 }
 
 /**
+ * Gets the current working directory from the VS Code API.
+ * @returns {string} - The current working directory.
+ */
+export function getWorkspacePath(): string {
+  return workspacePath;
+}
+
+/**
  * Gets the commit delay from configuration and subscribes to configuration changes.
  */
-export function initializeCommitDelay() {
+function initializeCommitDelay() {
   const configuredCommitDelay = vscode.workspace
     .getConfiguration("git-livesync")
     .get<number>("commitDelay");
@@ -56,7 +65,7 @@ export function initializeCommitDelay() {
 /**
  * Gets the commit delay from configuration and subscribes to configuration changes.
  */
-export function initialiseEnabled() {
+function initialiseEnabled() {
   const configuredEnabled = vscode.workspace
     .getConfiguration("git-livesync")
     .get<boolean>("enabled");
@@ -87,12 +96,19 @@ export function initialiseEnabled() {
 
 /**
  * Gets the workspace path.
- * @returns {string | undefined} - The workspace path or undefined if no workspace folder exists.
+ * @returns {string} - The workspace path or empty if no workspace folder exists.
  */
-export function getWorkspacePath(): string | undefined {
-  if (!vscode.workspace.workspaceFolders) {
-    vscode.window.showErrorMessage("No workspace folder found.");
-    return undefined;
+function initialiseWorkspacePath() {
+  if (vscode.workspace.workspaceFolders) {
+    workspacePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
   }
-  return vscode.workspace.workspaceFolders[0].uri.fsPath;
+}
+
+/**
+ * Initialises all the necessary global variables.
+ */
+export function initialise(): void {
+  initializeCommitDelay();
+  initialiseEnabled();
+  initialiseWorkspacePath();
 }

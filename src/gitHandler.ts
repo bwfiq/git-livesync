@@ -21,29 +21,20 @@ export class GitHandler {
 
   /**
    * Commits changes to the configured remote.
-   * @param {string} filePathRelative - Relative file path.
-   * @param {string} action - What action was performed to the file.
    */
-  public async commit(filePathRelative: string, action: string) {
-    const workspacePath = getWorkspacePath();
-    if (!workspacePath) {
-      return;
-    }
-
+  public async commit() {
     // Get the last commit time and don't commit if it's too soon
-    const lastCommitTimestamp = await this.getLastCommitTimestamp(
-      workspacePath
-    );
+    const lastCommitTimestamp = await this.getLastCommitTimestamp();
     const now = Math.floor(Date.now() / 1000); // Unix timestamp in seconds
 
     if (
       !(lastCommitTimestamp && now - lastCommitTimestamp < getCommitDelay())
     ) {
       const date = new Date();
-      const commitMessage = `${date.toLocaleString()}: ${action} ${filePathRelative}`;
+      const commitMessage = `${date.toLocaleString()}`;
       const terminal = vscode.window.createTerminal("git-livesync");
 
-      terminal.sendText(`cd ${workspacePath}`);
+      terminal.sendText(`cd ${getWorkspacePath()}`);
       terminal.sendText(
         'git pull \
             && git add . \
@@ -60,16 +51,13 @@ export class GitHandler {
 
   /**
    * Retrieves the timestamp of the last commit in UNIX format.
-   * @param {string} workspacePath - The path to the workspace.
    * @returns {Promise<number | null>} - The last commit timestamp or null if no commits exist.
    */
-  private async getLastCommitTimestamp(
-    workspacePath: string
-  ): Promise<number | null> {
+  private async getLastCommitTimestamp(): Promise<number | null> {
     return new Promise((resolve) => {
       const { exec } = require("child_process");
       exec(
-        "git -C " + workspacePath + " log -1 --format=%ct",
+        "git -C " + getWorkspacePath() + " log -1 --format=%ct",
         (error: any, stdout: string, stderr: string) => {
           if (error) {
             console.error(`Error getting last commit time: ${stderr}`);

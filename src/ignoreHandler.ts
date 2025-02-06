@@ -18,17 +18,12 @@ export class IgnoreHandler {
      * Constructs an IgnoreHandler instance and loads patterns from .gitignore.
      */
     constructor() {
-        const workspacePath = getWorkspacePath();
-        if (!workspacePath) {
-            return;
-        }
-        const gitignorePath = path.join(workspacePath, '.gitignore');
+        const gitignorePath = path.join(getWorkspacePath(), '.gitignore');
         let gitIgnorePatterns: string[] = [];
 
         if (fs.existsSync(gitignorePath)) {
             const gitIgnoreContent = fs.readFileSync(gitignorePath, 'utf8');
             gitIgnorePatterns = gitIgnoreContent.split('\n').filter((line) => line && !line.startsWith('#'));
-            //vscode.window.showInformationMessage(`ignore patterns: ${gitIgnorePatterns.join(', ')}`);
         }
 
         gitIgnorePatterns.push('.git');
