@@ -148,4 +148,7 @@ dist
 .history/
 
 # Built Visual Studio Code Extensions
-*.vsix
+*.
+
+# Output files from consolidate
+output*.*
