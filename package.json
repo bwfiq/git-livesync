@@ -9,15 +9,13 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "workspaceContains:**/.git",
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "git-livesync.helloWorld",
-        "title": "Hello World"
-      }
-    ],
+    "commands": [],
     "configuration": [
       {
         "title": "git-livesync",

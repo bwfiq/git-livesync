@@ -13,8 +13,7 @@ import { getCommitDelay, getEnabled, initialise } from "./utils";
  * @param {vscode.ExtensionContext} context - The extension context.
  */
 export function activate(context: vscode.ExtensionContext) {
-  console.log('Congratulations, your extension "git-livesync" is now active!');
-
+  vscode.window.showInformationMessage(`Hi.`);
   // Initialise global variables
   initialise();
 
@@ -27,17 +26,6 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(watcher);
 
   // TODO: Add a commit-and-sync on scheduled time instead of watcher
-
-  // Debug Messages
-  const disposable = vscode.commands.registerCommand(
-    "git-livesync.helloWorld",
-    () => {
-      vscode.window.showInformationMessage(
-        `Hi.`
-      );
-    }
-  );
-  context.subscriptions.push(disposable);
 }
 
 /**
