@@ -37,7 +37,7 @@ export class GitHandler {
    * Starts the automatic pulling process based on the configured delay.
    */
   private startAutoPull() {
-    console.log("we are pulling");
+    vscode.window.show("we are pulling");
     // Use a recursive function for continuous pulling
     const pullLoop = async () => {
       if (utils.getAutoPull()) {
