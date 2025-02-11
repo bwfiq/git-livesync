@@ -1,4 +1,4 @@
-# git-livesync
+# [git-livesync](https://marketplace.visualstudio.com/items?itemName=bwfiq.git-livesync)
 
 A VS Code extension to watch for file changes and automatically sync them to the configured Git remote.
 
