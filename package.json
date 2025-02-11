@@ -1,6 +1,7 @@
 {
   "name": "git-livesync",
   "displayName": "git-livesync",
+  "publisher": "bwfiq",
   "description": "watch for file changes and sync them to a remote repository",
   "version": "0.0.1",
   "engines": {
