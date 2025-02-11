@@ -4,8 +4,8 @@ A VS Code extension to watch for file changes and automatically sync them to the
 
 ## Features
 
-- **Automatic Git Commits**: Automatically commits changes to the repository whenever files are modified or created, ignoring files that are excluded in the `.gitignore`.
-- **Customizable Commit Delay**: Configure the delay between commits through settings.
+- Automatic Git Commits: Automatically commits changes to the repository whenever files are modified or created, ignoring files that are excluded in the `.gitignore`.
+- Customizable Commit Dela: Configure the delay between commits through settings.
 
 ## Installation
 
@@ -49,9 +49,9 @@ vsce package
 
 ## Configuration
 
-| Key                        | Type    | Description                                                        |
-| -------------------------- | ------- | ------------------------------------------------------------------ |
-| `git-livesync.commitDelay` | Number  | Time in seconds to wait before committing. Default is 30 seconds.  |
+| Key                        | Type    | Description                                                                                                                     |
+| -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `git-livesync.commitDelay` | Number  | Time in seconds to wait before committing. Default is 30 seconds.                                                               |
 | `git-livesync.enabled`     | Boolean | Enables or disables the extension's operations. Default is `false`. Take care not to enable this except in specific workspaces. |
 
 ## Development

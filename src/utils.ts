@@ -4,111 +4,50 @@ import * as vscode from "vscode";
  * @fileoverview Utility functions for workspace operations.
  */
 
-// Global Variables
-let commitDelay: number = 30;
-let enabled: boolean = false;
-let workspacePath: string = "";
-
 /**
- * Gets the current commit delay.
- * @returns {number} - The current commit delay configured in the settings.
+ * Retrieves a configuration setting from the "git-livesync" settings.
+ *
+ * @template T - The type of the configuration setting to be retrieved.
+ * @param {string} settingName - The name of the setting to retrieve.
+ * @param {T} defaultValue - The value to return if the setting is not found or is undefined.
+ * @returns {T} - The value of the specified setting, or the default value if not found.
  */
-export function getCommitDelay(): number {
-  return commitDelay;
+function getSetting<T>(settingName: string, defaultValue: T): T {
+  const configuredValue = vscode.workspace
+    .getConfiguration("git-livesync")
+    .get<T>(settingName);
+
+  return configuredValue !== undefined ? configuredValue : defaultValue;
 }
 
 /**
- * Gets the current enabled status.
- * @returns {boolean} - The current enabled status configured in the settings.
+ * Gets the current enabled status for the "git-livesync" extension.
+ *
+ * @returns {boolean} - The current enabled status configured in the settings. Defaults to false if not set.
  */
 export function getEnabled(): boolean {
-  return enabled;
+  return getSetting<boolean>("enabled", false);
 }
 
 /**
- * Gets the current working directory from the VS Code API.
- * @returns {string} - The current working directory.
+ * Gets the commit delay configured for the "git-livesync" extension.
+ *
+ * @returns {number} - The commit delay in seconds, or -1 if not configured.
  */
-export function getWorkspacePath(): string {
-  return workspacePath;
-}
-
-/**
- * Gets the commit delay from configuration and subscribes to configuration changes.
- */
-function initializeCommitDelay() {
-  const configuredCommitDelay = vscode.workspace
-    .getConfiguration("git-livesync")
-    .get<number>("commitDelay");
-
-  if (typeof configuredCommitDelay === "number") {
-    commitDelay = configuredCommitDelay;
-  }
-
-  // Listen for configuration changes
-  vscode.workspace.onDidChangeConfiguration((event) => {
-    if (event.affectsConfiguration("git-livesync.commitDelay")) {
-      const newDelay = vscode.workspace
-        .getConfiguration("git-livesync")
-        .get<number>("commitDelay");
-
-      if (typeof newDelay === "number") {
-        commitDelay = newDelay;
-      }
-    }
-  });
-}
-
-/**
- * Gets the commit delay from configuration and subscribes to configuration changes.
- */
-function initialiseEnabled() {
-  const configuredEnabled = vscode.workspace
-    .getConfiguration("git-livesync")
-    .get<boolean>("enabled");
-
-  if (typeof configuredEnabled === "boolean") {
-    enabled = configuredEnabled;
-  }
-
-  // Listen for configuration changes
-  vscode.workspace.onDidChangeConfiguration((event) => {
-    if (event.affectsConfiguration("git-livesync.enabled")) {
-      const configuredEnabled = vscode.workspace
-        .getConfiguration("git-livesync")
-        .get<boolean>("enabled");
-
-      if (typeof configuredEnabled === "boolean") {
-        enabled = configuredEnabled;
-      }
-    }
-  });
+export function getCommitDelay(): number {
+  return getSetting<number>("commitDelay", -1);
 }
 
 /**
  * Gets the workspace path and keeps it updated.
  * @returns {string} - The workspace path or empty if no workspace folder exists.
  */
-function initialiseWorkspacePath() {
+export function getWorkspacePath() {
   if (vscode.workspace.workspaceFolders) {
-    workspacePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    return vscode.workspace.workspaceFolders[0].uri.fsPath;
+  } else {
+    throw new Error("Couldn't get workspace path.");
   }
-
-  // Listen for workspace changes
-  vscode.workspace.onDidChangeWorkspaceFolders((event) => {
-    if (vscode.workspace.workspaceFolders) {
-      workspacePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-    }
-  });
-}
-
-/**
- * Initialises all the necessary global variables.
- */
-export function initialiseGlobals(): void {
-  initializeCommitDelay();
-  initialiseEnabled();
-  initialiseWorkspacePath();
 }
 
 /**
