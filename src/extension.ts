@@ -20,8 +20,6 @@ export function activate(context: vscode.ExtensionContext) {
   // Initialise a file system watcher to commit on file changes
   const watcher = new Watcher(gitHandler, ignoreHandler);
   context.subscriptions.push(watcher);
-
-  // TODO: Add a commit-and-sync on scheduled time instead of watcher
 }
 
 /**

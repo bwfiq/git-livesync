@@ -28,13 +28,36 @@ export class GitHandler {
       trimmed: false,
     };
     this.git = simpleGit(options);
+
+    // Start automatic pulling
+    this.startAutoPull();
+  }
+
+  /**
+   * Starts the automatic pulling process based on the configured delay.
+   */
+  private startAutoPull() {
+    console.log("we are pulling");
+    // Use a recursive function for continuous pulling
+    const pullLoop = async () => {
+      if (utils.getAutoPull()) {
+        await this.pull(); // Attempt to pull
+        console.log("pull");
+      }
+
+      // Wait for the configured delay before repeating the pull
+      setTimeout(pullLoop, 1000 * utils.getAutoPullDelay());
+    };
+
+    // Initiate the first pull
+    pullLoop();
   }
 
   /**
    * Commits changes to the configured remote.
    */
   public async commit() {
-    // Debouncing to ensure two commit processes don't start
+    // Debouncing to ensure two processes don't start
     if (this.inProgress) {
       return;
     }
@@ -46,9 +69,23 @@ export class GitHandler {
     const timeDelta = utils.getAutoCommitAndSyncDelay() - timeSinceLastCommit;
     const commitMessage = new Date().toLocaleString();
     const sleepDuration = Math.max(0, timeDelta); // sleep should handle negative numbers but we are evil
-    
+
     await utils.sleep(1000 * sleepDuration);
     await this.git.pull().add(".").commit(commitMessage).push();
+    this.inProgress = false;
+  }
+
+  /**
+   * Commits changes to the configured remote.
+   */
+  public async pull() {
+    // Debouncing to ensure two processes don't start
+    if (this.inProgress) {
+      return;
+    }
+    this.inProgress = true;
+
+    await this.git.pull();
     this.inProgress = false;
   }
 
