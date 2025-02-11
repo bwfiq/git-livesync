@@ -5,7 +5,7 @@ A VS Code extension to watch for file changes and automatically sync them to the
 ## Features
 
 - Automatic Git Commits: Automatically commits changes to the repository whenever files are modified or created, ignoring files that are excluded in the `.gitignore`.
-- Customizable Commit Dela: Configure the delay between commits through settings.
+- Customizable Commit Delay: Configure the delay between commits through settings.
 
 ## Installation
 
@@ -49,10 +49,13 @@ vsce package
 
 ## Configuration
 
-| Key                        | Type    | Description                                                                                                                     |
-| -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `git-livesync.commitDelay` | Number  | Time in seconds to wait before committing. Default is 30 seconds.                                                               |
-| `git-livesync.enabled`     | Boolean | Enables or disables the extension's operations. Default is `false`. Take care not to enable this except in specific workspaces. |
+| Key                                   | Type    | Description                                                                                                                                                                  |
+| ------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `git-livesync.enabled`                | Boolean | **CAUTION:** DO NOT ENABLE THIS FOR USER UNLESS YOU KNOW WHAT YOU ARE DOING! Specifies whether to enable this extension in the current workspace. Default is `false`.        |
+| `git-livesync.autoPull`               | Boolean | Enables automatically pulling from the current branch after a delay configured by `git-livesync.autoPullDelay`. Default is `true`.                                           |
+| `git-livesync.autoPullDelay`          | Integer | If `git-livesync.autoPull` is enabled, automatically pulls from the remote branch every X seconds. Default is 5 seconds.                                                     |
+| `git-livesync.autoCommitAndSync`      | Boolean | Enables automatically committing to the remote branch after a delay configured by `git-livesync.autoCommitAndSyncDelay`. Default is `true`.                                  |
+| `git-livesync.autoCommitAndSyncDelay` | Integer | If `git-livesync.autoCommitAndSync` is enabled, automatically commits to the remote branch on a file change if it is X seconds after the last commit. Default is 30 seconds. |
 
 ## Development
 
@@ -86,7 +89,6 @@ To set up a development environment for the Git Live Sync extension, follow thes
 
 - Benchmark and remove any slowdowns
 - Add a setting to adjust pull and push behaviour instead of always syncing on commit
-- Add auto pulling irrespective of file changes
 - Add error handling for if workspace doesn't have `.git/` or `.gitignore`
 
 ## Contributing
