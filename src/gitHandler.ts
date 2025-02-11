@@ -4,7 +4,7 @@
 
 import * as vscode from "vscode";
 import { simpleGit, SimpleGit, SimpleGitOptions } from "simple-git";
-import { getCommitDelay, getWorkspacePath, sleep } from "./utils";
+import * as utils from "./utils";
 
 /**
  * Class to handle Git operations.
@@ -22,7 +22,7 @@ export class GitHandler {
     this.context = context;
     this.inProgress = false;
     const options: Partial<SimpleGitOptions> = {
-      baseDir: getWorkspacePath(),
+      baseDir: utils.getWorkspacePath(),
       binary: "git",
       maxConcurrentProcesses: 6,
       trimmed: false,
@@ -43,11 +43,11 @@ export class GitHandler {
     const lastCommitTimestamp = await this.getLastCommitTimestamp();
     const now = Math.floor(Date.now() / 1000); // Unix timestamp in seconds
     const timeSinceLastCommit = now - lastCommitTimestamp; // in seconds
-    const timeDelta = getCommitDelay() - timeSinceLastCommit;
+    const timeDelta = utils.getAutoCommitAndSyncDelay() - timeSinceLastCommit;
     const commitMessage = new Date().toLocaleString();
     const sleepDuration = Math.max(0, timeDelta); // sleep should handle negative numbers but we are evil
     
-    await sleep(1000 * sleepDuration);
+    await utils.sleep(1000 * sleepDuration);
     await this.git.pull().add(".").commit(commitMessage).push();
     this.inProgress = false;
   }

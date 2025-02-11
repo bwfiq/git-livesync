@@ -21,7 +21,7 @@ function getSetting<T>(settingName: string, defaultValue: T): T {
 }
 
 /**
- * Gets the current enabled status for the "git-livesync" extension.
+ * Gets the current enabled status in the configuration.
  *
  * @returns {boolean} - The current enabled status configured in the settings. Defaults to false if not set.
  */
@@ -30,12 +30,39 @@ export function getEnabled(): boolean {
 }
 
 /**
- * Gets the commit delay configured for the "git-livesync" extension.
+ * Gets the auto-pull setting in the configuration.
  *
- * @returns {number} - The commit delay in seconds, or -1 if not configured.
+ * @returns {boolean} - True if automatic pulling is enabled, false otherwise. Defaults to true if not set.
  */
-export function getCommitDelay(): number {
-  return getSetting<number>("commitDelay", -1);
+export function getAutoPull(): boolean {
+  return getSetting<boolean>("autoPull", true);
+}
+
+/**
+ * Gets the auto-pull delay configured in the configuration.
+ *
+ * @returns {number} - The delay in seconds for auto-pulling, or the default of 5 seconds if not configured.
+ */
+export function getAutoPullDelay(): number {
+  return getSetting<number>("autoPullDelay", 5);
+}
+
+/**
+ * Gets the auto-commit and sync setting in the configuration.
+ *
+ * @returns {boolean} - True if automatic committing and syncing is enabled, false otherwise. Defaults to true if not set.
+ */
+export function getAutoCommitAndSync(): boolean {
+  return getSetting<boolean>("autoCommitAndSync", false);
+}
+
+/**
+ * Gets the auto-commit and sync delay configured in the configuration.
+ *
+ * @returns {number} - The delay in seconds for auto-committing after a file change, or the default of 30 seconds if not configured.
+ */
+export function getAutoCommitAndSyncDelay(): number {
+  return getSetting<number>("autoCommitAndSyncDelay", 30);
 }
 
 /**

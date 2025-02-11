@@ -37,12 +37,6 @@
             "scope": "resource",
             "description": "CAUTION: DO NOT ENABLE THIS FOR USER UNLESS YOU KNOW WHAT YOU ARE DOING! Specifies whether to enable this extension in this workspace."
           },
-          "git-livesync.commitDelay": {
-            "type": "integer",
-            "default": 30,
-            "scope": "resource",
-            "description": "Set the time in seconds since the last commit before the extension will auto commit your changes."
-          },
           "git-livesync.autoPull": {
             "type": "boolean",
             "default": true,
