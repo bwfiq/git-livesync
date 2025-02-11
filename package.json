@@ -2,8 +2,8 @@
   "name": "git-livesync",
   "displayName": "git-livesync",
   "publisher": "bwfiq",
-  "description": "watch for file changes and sync them to a remote repository",
-  "version": "0.0.1",
+  "description": "Watch for file changes and sync them to a remote repository.",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.96.0"
   },
@@ -35,13 +35,37 @@
             "type": "boolean",
             "default": false,
             "scope": "resource",
-            "description": "CAUTION: DO NOT ENABLE THIS FOR THE USER! Specifies whether to enable this extension in this workspace."
+            "description": "CAUTION: DO NOT ENABLE THIS FOR USER UNLESS YOU KNOW WHAT YOU ARE DOING! Specifies whether to enable this extension in this workspace."
           },
           "git-livesync.commitDelay": {
             "type": "integer",
             "default": 30,
             "scope": "resource",
             "description": "Set the time in seconds since the last commit before the extension will auto commit your changes."
+          },
+          "git-livesync.autoPull": {
+            "type": "boolean",
+            "default": true,
+            "scope": "resource",
+            "markdownDescription": "Enables automatically pulling from the current branch after a delay configured by `#git-livesync.autoPullDelay#`."
+          },
+          "git-livesync.autoPullDelay": {
+            "type": "integer",
+            "default": 5,
+            "scope": "resource",
+            "markdownDescription": "If `#git-livesync.autoPull#` is enabled, automatically pulls from the remote branch every X seconds."
+          },
+          "git-livesync.autoCommitAndSync": {
+            "type": "boolean",
+            "default": true,
+            "scope": "resource",
+            "markdownDescription": "Enables automatically committing to the remote branch after a delay configured by `#git-livesync.autoCommitAndSyncDelay#`."
+          },
+          "git-livesync.autoCommitAndSyncDelay": {
+            "type": "integer",
+            "default": 30,
+            "scope": "resource",
+            "markdownDescription": "If `#git-livesync.autoCommitAndSync#` is enabled, automatically commits to the remote branch on a file change if it is X seconds after the last commit."
           }
         }
       }
