@@ -39,7 +39,7 @@ export class GitHandler {
   private startAutoPull() {
     // Use a recursive function for continuous pulling
     const pullLoop = async () => {
-      if (utils.getAutoPull()) {
+      if (utils.getEnabled() && utils.getAutoPull()) {
         await this.pull(); // Attempt to pull
       }
 
