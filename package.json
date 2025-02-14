@@ -3,7 +3,7 @@
   "displayName": "git-livesync",
   "publisher": "bwfiq",
   "description": "Watch for file changes and sync them to a remote repository.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "engines": {
     "vscode": "^1.96.0"
   },
