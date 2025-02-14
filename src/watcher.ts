@@ -5,7 +5,7 @@
 import * as vscode from "vscode";
 import { GitHandler } from "./gitHandler";
 import { IgnoreHandler } from "./ignoreHandler";
-import { getEnabled, getWorkspacePath } from "./utils";
+import { getAutoCommitAndSync, getEnabled, getWorkspacePath } from "./utils";
 import path from "path";
 
 /**
@@ -40,7 +40,7 @@ export class Watcher implements vscode.Disposable {
 
     // TODO: Check all files, not just the changed one
     if (!this.ignoreHandler.ignores(relativeFilePath)) {
-      if (getEnabled()) {
+      if (getEnabled() && getAutoCommitAndSync()) {
         this.gitHandler.commit();
       }
     }
